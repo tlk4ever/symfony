@@ -1,0 +1,5 @@
+tableless_core:
+    resource: "@TablelessCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

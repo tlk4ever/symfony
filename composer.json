@@ -2,7 +2,7 @@
     "name": "tableless/iniciando-com-Symfony",
     "license": "MIT",
     "type": "project",
-    "description": ""Tableless: Iniciando com Framework Symfony 2",
+    "description": "Tableless: Iniciando com Framework Symfony 2",
     "autoload": {
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
