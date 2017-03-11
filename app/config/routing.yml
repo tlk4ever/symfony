@@ -3,7 +3,3 @@ tableless_core:
     type:     annotation
     prefix:   /
     
-tableless_model:
-    resource: "@TablelessModelBundle/Controller/"
-    type:     annotation
-    prefix:   /
