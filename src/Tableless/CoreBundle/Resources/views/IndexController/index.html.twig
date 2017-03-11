@@ -1,8 +1,49 @@
-{% extends "::base.html.twig" %}
-
-{% block title %}TablelessCoreBundle:IndexController:index{% endblock %}
-
-{% block body %}
-<h1>Welcome to the IndexController:index page</h1>
-{{ dump(posts) }}
+{% extends "::base.html.twig" %} 
+ 
+{% block title %}Simples Blog{% endblock %} 
+ 
+{% block content %} 
+ 
+    <div class="container"> 
+ 
+        <div class="row"> 
+ 
+            <div class="col-lg-12">
+ 
+                {% for post in posts %} 
+ 
+                    <article class="col-lg-4">
+ 
+                        <div class="thumbnail">
+ 
+                            <a href="{{ path('show', { 'id': post.id }) }}">
+ 
+                                <img class="img-responsive" src="{{ asset('imagem.jpg') }}" alt="img" title="img"/>
+ 
+                            </a> 
+ 
+                            <div class="caption"> 
+ 
+                                <h3><a href="{{ path('show', { 'id': post.id }) }}">{{ post.title }}</a></h3> 
+ 
+                                <p>Escrito por: {{ post.author.name }}</p> 
+ 
+                                <p>{{ post.content|slice(0, 45) }} ...</p>
+ 
+                                <p><a href="{{ path('show', { 'id': post.id }) }}">Leia mais...</a></p>
+ 
+                            </div>
+ 
+                        </div> 
+ 
+                    </article>
+ 
+                {% endfor %} 
+ 
+            </div>
+ 
+        </div> 
+ 
+    </div>
+ 
 {% endblock %}
