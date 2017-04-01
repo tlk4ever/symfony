@@ -16,6 +16,7 @@ class PostType extends AbstractType {
         $builder
                 ->add('title')
                 ->add('content')
+                 ->add('file')
                 ->add('author')
         ;
     }
