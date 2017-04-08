@@ -19,11 +19,11 @@
             </tr>
             <tr>
                 <th>Createat</th>
-                <td>{{ entity.createAt }}</td>
+                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Updateat</th>
-                <td>{{ entity.updateAt }}</td>
+                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
         </tbody>
     </table>
