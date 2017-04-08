@@ -9,14 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tableless\ModelBundle\Entity\Author;
 use Tableless\ModelBundle\Form\AuthorType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Author controller.
  *
  * @Route("/author")
  */
-class AuthorController extends Controller
-{
+class AuthorController extends Controller {
 
     /**
      * Lists all Author entities.
@@ -25,8 +25,7 @@ class AuthorController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('TablelessModelBundle:Author')->findAll();
@@ -35,6 +34,7 @@ class AuthorController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Author entity.
      *
@@ -42,8 +42,12 @@ class AuthorController extends Controller
      * @Method("POST")
      * @Template("TablelessCoreBundle:Author:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
+        $securityContext = $this->get('security.context');
+
+        if (!$securityContext->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException(" Somente o administrador pode acessar! ");
+        }
         $entity = new Author();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -58,7 +62,7 @@ class AuthorController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -69,8 +73,7 @@ class AuthorController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Author $entity)
-    {
+    private function createCreateForm(Author $entity) {
         $form = $this->createForm(new AuthorType(), $entity, array(
             'action' => $this->generateUrl('author_create'),
             'method' => 'POST',
@@ -88,14 +91,18 @@ class AuthorController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
+        $securityContext = $this->get('security.context');
+
+        if (!$securityContext->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException(" Somente o administrador pode acessar! ");
+        }
         $entity = new Author();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -106,8 +113,7 @@ class AuthorController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('TablelessModelBundle:Author')->find($id);
@@ -119,7 +125,7 @@ class AuthorController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -131,8 +137,12 @@ class AuthorController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
+        $securityContext = $this->get('security.context');
+
+        if (!$securityContext->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException(" Somente o administrador pode acessar! ");
+        }
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('TablelessModelBundle:Author')->find($id);
@@ -145,21 +155,20 @@ class AuthorController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Author entity.
-    *
-    * @param Author $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Author $entity)
-    {
+     * Creates a form to edit a Author entity.
+     *
+     * @param Author $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Author $entity) {
         $form = $this->createForm(new AuthorType(), $entity, array(
             'action' => $this->generateUrl('author_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -169,6 +178,7 @@ class AuthorController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Author entity.
      *
@@ -176,8 +186,12 @@ class AuthorController extends Controller
      * @Method("PUT")
      * @Template("TablelessModelBundle:Author:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
+        $securityContext = $this->get('security.context');
+
+        if (!$securityContext->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException(" Somente o administrador pode acessar! ");
+        }
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('TablelessModelBundle:Author')->find($id);
@@ -197,19 +211,24 @@ class AuthorController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Author entity.
      *
      * @Route("/{id}", name="author_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
+        $securityContext = $this->get('security.context');
+
+        if (!$securityContext->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException(" Somente o administrador pode acessar! ");
+        }
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,13 +254,13 @@ class AuthorController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('author_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('author_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }
